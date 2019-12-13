@@ -26,7 +26,7 @@ void shilfDeck(std::vector<Card> &card) {
    for(int shilfTime = 0; shilfTime < 52; shilfTime++){
         int random = getRandomNum(0,51);
         swapCard(card[shilfTime],card[random]);
-        shilfTime++;
+        //shilfTime++;
     };
     printDeck(card);
 }
@@ -50,20 +50,30 @@ bool playBlackJack(std::vector<Card> &card) {
     int dealerScore(0);
     char response = 'h';
 
-    dealerScore += cardPtr->getCardValue();
-    playerScore += cardPtr->getCardValue();
+    //dealerScore += cardPtr->getCardValue();
+    //playerScore += cardPtr->getCardValue();
 
     while (response != 's')
     {
-        index++;
         Card *nwPtr = &card[index];
-        std::cout << "Your total score is " << playerScore << " The card is ";
-        nwPtr->printCard();
-        std::cout << "\nWill you hit or stand (h/s)? ";
-        std::cin >> response;
-        if(response == 'h'){
-            playerScore += nwPtr->getCardValue();
-        }
+        if((index % 2 == 0 || index == 0)){
+            std::cout << "Dealer total score is " << dealerScore << std::endl;
+            if( dealerScore < 17){
+                std::cout << "Dealer chooses hit" <<std::endl;
+                dealerScore += nwPtr->getCardValue();
+            } else {
+                std::cout << "Dealer chooses stop" <<std::endl;
+            }
+        } else {
+            std::cout << "Your total score is " << playerScore << " The card is ";
+            nwPtr->printCard();
+            std::cout << "\nWill you hit or stand (h/s)? ";
+            std::cin >> response;
+            if(response == 'h'){
+                playerScore += nwPtr->getCardValue();
+            }}
+
+        index++;
     }
 
     // Players that go over 21 get busted
@@ -71,12 +81,12 @@ bool playBlackJack(std::vector<Card> &card) {
         return false;
 
     // Dealer must stop when value is at least 17
-    int index2 = 0;
+    /*int index2 = 0;
     while (dealerScore < 17){
         index2++;
         Card *ptr2 = &card[index2];
         dealerScore += ptr2->getCardValue();
-    }
+    }*/
 
 
     std::cout << "The dealer's score is " << dealerScore << '\n' << "And your score is " << playerScore << std::endl;
